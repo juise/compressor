@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 public class Command {
 	Logger logger = LoggerFactory.getLogger(Main.class);
-	
+
 	long size = 0;
 
 	private Integer getType(String name) {
@@ -28,7 +28,7 @@ public class Command {
 	
 	public Command(String name, long size) {
 		File root = new File(name);
-		
+
 		this.size = size;
 
 		compression(root);
@@ -39,7 +39,7 @@ public class Command {
 
 		if (type > -1) {
 			Compressor compressor = new Compressor(size);
-			return compressor.compress(file, type);
+			return compressor.convert(file, type);
 		}
 
 		return false;

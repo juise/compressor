@@ -48,7 +48,7 @@ public class Compressor {
 				g.drawImage(inputImage, 0, 0, nw, nh, 0, 0, inputImage.getWidth(), inputImage.getHeight(), null);
 				g.dispose();
 
-				ImageIO.write(outputImage, "jpg", new File(name));
+				ImageIO.write(outputImage, "jpg", file);
 
 				compress(file);
 
@@ -60,37 +60,31 @@ public class Compressor {
 
 		return false;
 	}
-	
-	public boolean compress(File file, Integer type) {
-		if (accept(file)) {
-			try {
-				BufferedImage inputImage = Converter.convert(file, type);
 
-				int nw = inputImage.getWidth() - (int)(inputImage.getWidth() * 0.5);
-				int nh = inputImage.getHeight() - (int)(inputImage.getHeight() * 0.5);
+	public boolean convert(File file, Integer type) {
+		try {
+			String name = file.getAbsolutePath();
+			name = name.substring(0, name.length() - 3).concat("jpg");
 
-//				BufferedImage outputImage = new BufferedImage(nw, nh, inputImage.getType());
-				BufferedImage outputImage = new BufferedImage(inputImage.getWidth(), inputImage.getHeight(), inputImage.getType());
+			BufferedImage inputImage = Converter.convert(file, type);
+			BufferedImage outputImage = new BufferedImage(inputImage.getWidth(), inputImage.getHeight(), inputImage.getType());
 
-				Graphics2D g = outputImage.createGraphics();
-				
-				g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-//				g.drawImage(inputImage, 0, 0, nw, nh, 0, 0, inputImage.getWidth(), inputImage.getHeight(), null);
-				g.drawImage(inputImage, 0, 0, inputImage.getWidth(), inputImage.getHeight(), 0, 0, inputImage.getWidth(), inputImage.getHeight(), null);
-				g.dispose();
+			Graphics2D g = outputImage.createGraphics();
 
-				String name = file.getAbsolutePath();
-				name = name.substring(0, name.length() - 3).concat("jpg");
-				
-				file.delete();
-				ImageIO.write(outputImage, "jpg", new File(name));
+			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+			g.drawImage(inputImage, 0, 0, inputImage.getWidth(), inputImage.getHeight(), 0, 0, inputImage.getWidth(), inputImage.getHeight(), null);
+			g.dispose();
 
-//				compress(file, type);
+			file.delete();
+			file = new File(name);
 
-				return true;
-			} catch(Exception e) {
-				e.printStackTrace();
-			}
+			ImageIO.write(outputImage, "jpg", file);
+
+			compress(file);
+
+			return true;
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
 
 		return false;
