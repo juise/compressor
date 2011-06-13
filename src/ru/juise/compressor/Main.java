@@ -14,8 +14,13 @@ public class Main {
 		Logger logger = LoggerFactory.getLogger(Main.class);
 
 		String FILENAME = "/Users/juise/cmp";
-		if (args.length > 0) {
+		if (args.length > 1) {
 			FILENAME = args[0];
+		}
+
+		long SIZE = 1024 * 400;
+		if (args.length > 2) {
+			SIZE = Integer.valueOf(args[1]);
 		}
 
 		logger.info("Start");
@@ -26,7 +31,7 @@ public class Main {
 			//predictor.getExts();
 
 			// Do compression
-			new Command(FILENAME);
+			new Command(FILENAME, SIZE);
 		} catch(Throwable e) {
 			e.printStackTrace();
 		}

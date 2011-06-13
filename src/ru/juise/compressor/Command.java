@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 
 public class Command {
 	Logger logger = LoggerFactory.getLogger(Main.class);
+	
+	long size = 0;
 
 	private Integer getType(String name) {
 		if (name.endsWith("psd")) return 0;
@@ -24,8 +26,10 @@ public class Command {
 		return -1;
 	}
 	
-	public Command(String name) {
+	public Command(String name, long size) {
 		File root = new File(name);
+		
+		this.size = size;
 
 		compression(root);
 	}
@@ -34,7 +38,7 @@ public class Command {
 		Integer type = getType(file.getName());
 
 		if (type > -1) {
-			Compressor compressor = new Compressor();
+			Compressor compressor = new Compressor(size);
 			return compressor.compress(file, type);
 		}
 

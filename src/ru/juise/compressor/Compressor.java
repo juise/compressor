@@ -16,15 +16,51 @@ import java.awt.image.BufferedImage;
 
 
 public class Compressor {
-	public Compressor() {
+	long size = 0;
+
+	public Compressor(long size) {
+		this.size = size;
 	}
 
 	public boolean accept(File file) {
-		float len = file.length();
+		long fileSize = file.length(); 
 
-		return true;
+		if (fileSize > size) {
+			return true;
+		}
+
+		return false;
 	}
 
+	public boolean compress(File file) {
+		if (accept(file)) {
+			try {
+				BufferedImage inputImage = ImageIO.read(file);
+
+				int nw = inputImage.getWidth() - (int)(inputImage.getWidth() * 0.5);
+				int nh = inputImage.getHeight() - (int)(inputImage.getHeight() * 0.5);
+
+				BufferedImage outputImage = new BufferedImage(nw, nh, inputImage.getType());
+
+				Graphics2D g = outputImage.createGraphics();
+
+				g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+				g.drawImage(inputImage, 0, 0, nw, nh, 0, 0, inputImage.getWidth(), inputImage.getHeight(), null);
+				g.dispose();
+
+				ImageIO.write(outputImage, "jpg", new File(name));
+
+				compress(file);
+
+				return true;
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		return false;
+	}
+	
 	public boolean compress(File file, Integer type) {
 		if (accept(file)) {
 			try {
