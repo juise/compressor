@@ -15,9 +15,7 @@
         <delete file="${ant.project.name}.jar" />
     </target>
 
-    <target name="compile" depends="clean">
-        <mkdir dir="${classes}" />
-
+    <target name="lib" depends="clean">
         <unzip src="${lib}/log4j-1.2.16.jar" dest="${classes}" />
         <unzip src="${lib}/psd-image.jar" dest="${classes}" />
         <unzip src="${lib}/psd-parser.jar" dest="${classes}" />
@@ -30,6 +28,11 @@
         <delete file="${classes}/psd-image.iml" />
         <delete file="${classes}/.project" />
         <delete file="${classes}/.classpath" />
+        <delete file="${classes}/.DS_Store" />
+    </target>
+
+    <target name="compile" depends="lib">
+        <mkdir dir="${classes}" />
 
         <javac srcdir="${src}" destdir="${classes}" debug="on" includeantruntime="true">
             <classpath refid="classpath" />
@@ -47,6 +50,7 @@
                 <attribute name="Main-Class" value="ru.juise.compressor.Main" />
             </manifest>
         </jar>
+        <delete dir="${classes}" />
         <echo message="# java -Xmx512m -Xms512m -jar compressor.jar path size"/>
     </target>
 
