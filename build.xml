@@ -5,7 +5,7 @@
     <property name="classes" value="${basedir}/classes" />
 
     <path id="classpath">
-        <fileset dir="${classes}/lib">
+        <fileset dir="${lib}">
             <include name="**/*.jar" />
         </fileset>
     </path>
@@ -17,28 +17,37 @@
 
     <target name="compile" depends="clean">
         <mkdir dir="${classes}" />
-        <copy todir="${classes}/lib">
-            <fileset dir="${lib}" />
-        </copy>
+
+        <unzip src="${lib}/log4j-1.2.16.jar" dest="${classes}" />
+        <unzip src="${lib}/psd-image.jar" dest="${classes}" />
+        <unzip src="${lib}/psd-parser.jar" dest="${classes}" />
+        <unzip src="${lib}/slf4j-api-1.6.1.jar" dest="${classes}" />
+        <unzip src="${lib}/slf4j-log4j12-1.6.1.jar" dest="${classes}" />
+
+        <delete dir="${classes}/META-INF" />
+        <delete dir="${classes}/.settings" />
+        <delete file="${classes}/psd-parser.iml" />
+        <delete file="${classes}/psd-image.iml" />
+        <delete file="${classes}/.project" />
+        <delete file="${classes}/.classpath" />
 
         <javac srcdir="${src}" destdir="${classes}" debug="on" includeantruntime="true">
             <classpath refid="classpath" />
         </javac>
+
         <copy todir="${classes}">
             <fileset dir="${src}" excludes="**/*.java" />
         </copy>
+
         </target>
 
     <target name="build" depends="compile">
         <jar destfile="${ant.project.name}.jar" basedir="${classes}">
-            <lib dir="${classes}/lib" />
             <manifest>
                 <attribute name="Main-Class" value="ru.juise.compressor.Main" />
             </manifest>
         </jar>
+        <echo message="# java -Xmx512m -Xms512m -jar compressor.jar path size"/>
     </target>
 
-    <target name="run" depends="compile">
-        <java classname="ru.juise.compressor.Main" classpath="${classes}" />
-    </target>
 </project>

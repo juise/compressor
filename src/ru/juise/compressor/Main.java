@@ -13,13 +13,13 @@ public class Main {
 	public static void main(String args[]) {
 		Logger logger = LoggerFactory.getLogger(Main.class);
 
-		String FILENAME = "/Users/juise/cmp";
-		if (args.length > 1) {
+		String FILENAME = "";
+		if (args.length > 0) {
 			FILENAME = args[0];
 		}
 
 		long SIZE = 1024 * 400;
-		if (args.length > 2) {
+		if (args.length > 1) {
 			SIZE = Integer.valueOf(args[1]);
 		}
 
