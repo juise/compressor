@@ -5,7 +5,7 @@
     <property name="classes" value="${basedir}/classes" />
 
     <path id="classpath">
-        <fileset dir="${lib}">
+        <fileset dir="${classes}/lib">
             <include name="**/*.jar" />
         </fileset>
     </path>
@@ -17,20 +17,28 @@
 
     <target name="compile" depends="clean">
         <mkdir dir="${classes}" />
-        <javac srcdir="${src}" destdir="${classes}">
-            <classpath refid="classpath"/>
+        <copy todir="${classes}/lib">
+            <fileset dir="${lib}" />
+        </copy>
+
+        <javac srcdir="${src}" destdir="${classes}" debug="on" includeantruntime="true">
+            <classpath refid="classpath" />
         </javac>
         <copy todir="${classes}">
-            <fileset dir="${src}" excludes="**/*.java"/>
-        	<fileset dir="${lib}" excludes="**/*.java"/>
+            <fileset dir="${src}" excludes="**/*.java" />
         </copy>
-    </target>
+        </target>
 
     <target name="build" depends="compile">
-        <jar destfile="${ant.project.name}.jar" basedir="${classes}" includes="${lib}">
+        <jar destfile="${ant.project.name}.jar" basedir="${classes}">
+            <lib dir="${classes}/lib" />
             <manifest>
-                <attribute name="Main-Class" value="${main.class}" />
+                <attribute name="Main-Class" value="ru.juise.compressor.Main" />
             </manifest>
         </jar>
+    </target>
+
+    <target name="run" depends="compile">
+        <java classname="ru.juise.compressor.Main" classpath="${classes}" />
     </target>
 </project>
