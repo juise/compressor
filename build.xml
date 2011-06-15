@@ -23,11 +23,6 @@
         <unzip src="${lib}/slf4j-log4j12-1.6.1.jar" dest="${classes}" />
 
         <delete dir="${classes}/META-INF" />
-        <delete dir="${classes}/.settings" />
-        <delete file="${classes}/psd-parser.iml" />
-        <delete file="${classes}/psd-image.iml" />
-        <delete file="${classes}/.project" />
-        <delete file="${classes}/.classpath" />
         <delete file="${classes}/.DS_Store" />
     </target>
 
