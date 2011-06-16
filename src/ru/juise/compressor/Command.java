@@ -31,7 +31,11 @@ public class Command {
 
 		this.size = size;
 
-		compression(root);
+        if (root.exists() && root.isDirectory()) {
+		    compression(root);
+        } else {
+            logger.debug("File or directory '{}' not found", name);
+        }
 	}
 
 	private boolean compress(File file) {
