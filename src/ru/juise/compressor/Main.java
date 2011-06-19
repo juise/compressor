@@ -13,29 +13,31 @@ public class Main {
 	public static void main(String args[]) {
 		Logger logger = LoggerFactory.getLogger(Main.class);
 
-		String FILENAME = "";
-		if (args.length > 0) {
-			FILENAME = args[0];
-		}
-
-		long SIZE = 1024 * 400;
-		if (args.length > 1) {
-			SIZE = Integer.valueOf(args[1]);
-		}
-
 		logger.info("Start");
 
-		try {
-			// Do prediction
-			//Predictor predictor = new Predictor(FILENAME);
-			//predictor.getExts();
+		if (args.length == 0) {
+			View view = new View();
+		} else {
 
-			// Do compression
-			new Command(FILENAME, SIZE);
-		} catch(Throwable e) {
-			e.printStackTrace();
+			String FILENAME = "";
+			if (args.length > 1) {
+				FILENAME = args[0];
+			}
+
+			long SIZE = 1024 * 800;
+			if (args.length > 2) {
+				SIZE = Integer.valueOf(args[1]);
+			}
+
+			try {
+				new Command(FILENAME, SIZE);
+			} catch(Throwable e) {
+				e.printStackTrace();
+			}
+
+			logger.info("Stop");
+
 		}
 		
-		logger.info("Stop");
 	}
 }
